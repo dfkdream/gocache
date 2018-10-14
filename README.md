@@ -1,4 +1,8 @@
 # gocache
+
+[![GoDoc](https://godoc.org/github.com/dfkdream/gocache?status.svg)](https://godoc.org/github.com/dfkdream/gocache)
+[![Go Report Card](https://goreportcard.com/badge/github.com/dfkdream/gocache)](https://goreportcard.com/report/github.com/dfkdream/gocache)
+
 gocache is LRU based []byte memory cache library for golang
 
 ## Setup
@@ -18,20 +22,32 @@ Please carefully decide cache size. gocache currently do not calculates total ca
 ```go
 package main
 
-import(
-    "fmt"
-    "strconv"
+import (
+	"fmt"
+	"strconv"
 
-    "github.com/dfkdream/gocache"
+	"github.com/dfkdream/gocache"
 )
 
-func main(){
-    cache:=NewByteCache(3)
-    for i:=1;i<=5;i++{
-        cache.Set(strconv.Itoa(i),[]byte(strconv.Itoa(i*2)))
-    }
-    for i:=1;i<=5;i++{
-        fmt.Println(cache.Get(strconv.Itoa(i)))
-    }
+func main() {
+	cache := gocache.NewByteCache(3)
+	for i := 1; i <= 5; i++ {
+		cache.Set(strconv.Itoa(i), []byte(strconv.Itoa(i*2)))
+	}
+	for i := 1; i <= 5; i++ {
+		if get := cache.Get(strconv.Itoa(i)); get == nil {
+			fmt.Println(nil)
+		} else {
+			fmt.Println(string(get))
+		}
+	}
 }
+```
+Output
+```
+<nil>
+<nil>
+6
+8
+10
 ```
